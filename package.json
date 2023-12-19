@@ -1,18 +1,19 @@
 {
-  "homepage": "https://derutron.github.io/Audio-phile_ecommerce/",
+  "homepage": "https://derutron.github.io/Audiophile_ecommerce/",
   "name": "my-ecco-app",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "vite build && gh-pages -b master -d dist",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "clean": "rm -rf dist",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "vite build && gh-pages -b main -d dist"
   },
+  
   "dependencies": {
     "debug": "^4.3.1",
     "formik": "^2.4.5",
