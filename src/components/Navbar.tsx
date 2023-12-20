@@ -1,12 +1,10 @@
+import React, { useState } from "react";
 import Hamburger from "../images/shared/tablet/icon-hamburger.svg";
 import Logo from "../images/shared/audiophile-logo.svg";
 import Cart from "../images/shared/icon-cart.svg";
 import Close from "../images/shared/tablet/icon-close-menu.svg";
-import Arrow from "../images/shared/arrow.svg";
-import Shadow from "../images/shared/shadow.png";
 import { Link } from "react-router-dom";
 import { menuListArray } from "../components/menuListArray";
-import Products from "./Products";
 import { motion } from "framer-motion";
 
 interface Props {
@@ -16,16 +14,15 @@ interface Props {
   setActiveMenuRoute: (e: number) => void;
   productAmount: number;
   addToCart: boolean;
-  setAddToCart: (e: boolean) => void;
-  XX99MarkIIAmout: number;
-  XX99MarkIAmout: number;
+  setAddToCart: (e: boolean) => void; 
   cartOverlay: boolean;
   setCartOverlay: (e: boolean) => void;
   checkoutRoute: boolean;
   setCheckoutRoute: (e: boolean) => void;
 }
 
-const Navbar = ({
+
+const Navbar: React.FC<Props> = ({
   mobileMenu,
   setMobileMenu,
   activeMenuRoute,
@@ -34,9 +31,23 @@ const Navbar = ({
   addToCart,
   cartOverlay,
   setCartOverlay,
-  // checkoutRoute,
-  setCheckoutRoute,
 }: Props) => {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const handleMobileMenuToggle = () => {
+    setMobileMenu(!mobileMenu);
+    setIsDropdownOpen(false);
+  };
+
+  const handleDropdownToggle = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setMobileMenu(false);
+    setIsDropdownOpen(false);
+  };
+
   return (
     <div className="bg-black">
       <motion.div
@@ -47,112 +58,90 @@ const Navbar = ({
         <div className="lg:max-w-[1440px] lg:sticky lg:top-0 lg:right-0 lg:left-0 max-w-full z-[100] flex lg:mx-auto justify-between items-center bg-black px-6 md:px-[39px] lg:px-[165px] py-8 lg:py-9">
           {mobileMenu ? (
             <img
-              onClick={() => setMobileMenu(false)}
+              onClick={handleMobileMenuToggle}
               src={Close}
               alt="Close"
               className="lg:hidden cursor-pointer z-[100]"
             />
           ) : (
             <img
-              onClick={() => setMobileMenu(true)}
+              onClick={handleMobileMenuToggle}
               src={Hamburger}
               alt="Hamburger"
               className="lg:hidden cursor-pointer z-[100]"
             />
           )}
-          {/* MobileMenu */}
-          {mobileMenu ? (
-            <div className="absolute z-[100] top-0 left-0 right-0 bg-black w-full h-screen lg:hidden">
+          {/* MobileMenu starts here */}
+          {mobileMenu && (
+            <div className="absolute z-[100] top-0 left-0 right-0 bg-black w-full h-[auto] lg:hidden">
               <img
-                onClick={() => setMobileMenu(false)}
+                onClick={handleMobileMenuToggle}
                 src={Close}
                 alt="Close"
                 className="lg:hidden absolute top-9 left-6 cursor-pointer z-[100]"
               />
-              <div className="w-full h-[730px] bg-white mt-[90px] pt-[80px] md:pt-[200px] md:gap-20 md:px-5 rounded-b-2xl flex flex-col md:flex-row">
-                {Products.map((product, index) => {
-                  return (
-                    <div
-                      key={index}
-                      className="w-[327px] h-[165px] mb-[68px] rounded-lg bg-silver mx-auto flex flex-col items-center justify-center"
+              <div className="w-full h-[auto] bg-black mt-[9px] pt-[80px] md:pt-[auto] md:gap-20 md:px-5 flex flex-col md:flex-row">
+                <div className="mx-auto">
+                  <ul className="text-white text-[15px] font-bold tracking-[1px] uppercase mb-4 space-y-2 mx-auto">
+                    {menuListArray.map((item, index) => (
+                      <li
+                      key={item.id}
+                      className={`${
+                        index === activeMenuRoute ? "text-orange" : ""
+                      } cursor-pointer hover:text-orange transition-all duration-400 flex justify-center`}
+                      onClick={() => {
+                        setActiveMenuRoute(index);
+                        handleDropdownToggle();
+                        setCartOverlay(false);
+                        closeMobileMenu();
+                      }}
                     >
-                      <div className="flex-col mt-[-4rem]">
-                        <img
-                          src={product.image}
-                          alt={product.title}
-                          className="w-20 lg:w-[120px]"
-                        />
-                        <img
-                          src={Shadow}
-                          alt="Shadow"
-                          className="w-20 h-[14px]"
-                        />
-                      </div>
-                      <div className="mt-2 lg:mt-8 space-y-4">
-                        <h1 className="text-black text-[15px]  font-bold tracking-[1px] uppercase">
-                          {product.title}
-                        </h1>
-                        <Link
-                          to={product.link}
-                          onClick={() => {
-                            setMobileMenu(false);
-                            setActiveMenuRoute(product.id);
-                            setCheckoutRoute(false);
-                            setCartOverlay(false);
-                          }}
-                          className="flex flex-col gap-y-4"
-                        >
-                          <div className="flex gap-3 items-center mx-auto justify-center cursor-pointer">
-                            <h2 className="text-black text-[13px] font-bold tracking-[1px] uppercase opacity-50 z-10">
-                              SHOP
-                            </h2>
-                            <img src={Arrow} alt="Arrow" />
-                          </div>
-                        </Link>
-                      </div>
-                    </div>
-                  );
-                })}
+                      <Link to={item.to}>{item.title}</Link>
+                    </li>
+                    
+                    ))}
+                  </ul>
+                </div>
               </div>
             </div>
-          ) : null}
+          )}
+          {/* MobileMenu ends here */}
           <Link
             to={"/"}
             onClick={() => {
               setActiveMenuRoute(0);
-              setCheckoutRoute(false);
+              handleDropdownToggle();
               setCartOverlay(false);
-              setMobileMenu(false);
+              closeMobileMenu();
             }}
             className="z-[100]"
           >
             <img src={Logo} alt="Logo" className="cursor-pointer z-50" />
           </Link>
           <ul className="text-white z-[100] hidden lg:flex items-center gap-8">
-            {menuListArray.map((item, index) => {
-              return (
-                <li
-                  onClick={() => {
-                    setActiveMenuRoute(index);
-                    setCheckoutRoute(false);
-                    setCartOverlay(false);
-                  }}
-                  key={item.id}
-                  className={`${
-                    index === activeMenuRoute ? "text-orange" : ""
-                  } text-[13px] font-bold leading-6 tracking-[2px] uppercase cursor-pointer hover:text-orange transition-all duration-400`}
-                >
-                  <Link to={item.to}>{item.title}</Link>
-                </li>
-              );
-            })}
+            {menuListArray.map((item, index) => (
+              <li
+                onClick={() => {
+                  setActiveMenuRoute(index);
+                  handleDropdownToggle();
+                  setCartOverlay(false);
+                  closeMobileMenu();
+                }}
+                key={item.id}
+                className={`${
+                  index === activeMenuRoute ? "text-orange" : ""
+                } text-[13px] font-bold leading-6 tracking-[2px] uppercase cursor-pointer hover:text-orange transition-all duration-400`}
+              >
+                <Link to={item.to}>{item.title}</Link>
+              </li>
+            ))}
           </ul>
           <div>
             <div
               className="relative z-[100] cursor-pointer"
               onClick={() => {
                 setCartOverlay(!cartOverlay);
-                setMobileMenu(false);
+                closeMobileMenu();
               }}
             >
               <img

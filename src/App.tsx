@@ -1,3 +1,4 @@
+
 import Navbar from "./components/Navbar";
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
@@ -64,20 +65,18 @@ const App = () => {
       }`}
     >
       <Navbar
-        mobileMenu={mobileMenu}
-        setMobileMenu={setMobileMenu}
-        activeMenuRoute={activeMenuRoute}
-        setActiveMenuRoute={setActiveMenuRoute}
-        productAmount={productAmount}
-        addToCart={addToCart}
-        setAddToCart={setAddToCart}
-        XX99MarkIIAmout={XX99MarkIIAmout}
-        XX99MarkIAmout={XX99MarkIAmout}
-        cartOverlay={cartOverlay}
-        setCartOverlay={setCartOverlay}
-        checkoutRoute={checkoutRoute}
-        setCheckoutRoute={setCheckoutRoute}
-      />
+  mobileMenu={mobileMenu}
+  setMobileMenu={setMobileMenu}
+  activeMenuRoute={activeMenuRoute}
+  setActiveMenuRoute={setActiveMenuRoute}
+  productAmount={productAmount}
+  addToCart={addToCart}
+  setAddToCart={setAddToCart}  // Make sure this line is present
+  cartOverlay={cartOverlay}
+  setCartOverlay={setCartOverlay}
+  checkoutRoute={checkoutRoute}
+  setCheckoutRoute={setCheckoutRoute}
+/>
 
       <Routes>
         <Route
