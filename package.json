@@ -11,7 +11,7 @@
     "clean": "rm -rf dist",
     "serve": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "vite build && gh-pages -b main -d dist"
+    "deploy": "vite build && gh-pages -d dist"
   },
   
   "dependencies": {
