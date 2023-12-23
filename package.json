@@ -13,7 +13,6 @@
     "predeploy": "npm run build",
     "deploy": "vite build && gh-pages -d dist"
   },
-  
   "dependencies": {
     "debug": "^4.3.1",
     "formik": "^2.4.5",
